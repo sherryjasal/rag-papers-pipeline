@@ -5,6 +5,7 @@ import os
 import re
 import sys
 import argparse
+from abc import ABC, abstractmethod
 from pathlib import Path
 
 import fitz  # PyMuPDF
@@ -29,6 +30,37 @@ CHUNK_TOKENS = 512
 CHUNK_CHARS = CHUNK_TOKENS * CHARS_PER_TOKEN  # 2048 chars ≈ 512 tokens
 OVERLAP_CHARS = int(CHUNK_CHARS * 0.15)       # ~307 chars (15% overlap)
 MIN_SENTENCE_LEN = 20
+
+
+# ---------- Embedder abstraction ----------
+
+class Embedder(ABC):
+    """Common interface for all embedding backends."""
+
+    @property
+    @abstractmethod
+    def name(self) -> str:
+        """Short identifier used in collection names and logs."""
+
+    @abstractmethod
+    def encode(self, texts: list[str]) -> list[list[float]]:
+        """Return a list of embedding vectors (one per input text)."""
+
+
+class SentenceTransformerEmbedder(Embedder):
+    """Wraps any sentence-transformers model behind the Embedder interface."""
+
+    def __init__(self, model_name: str = EMBED_MODEL_NAME):
+        self._model_name = model_name
+        self._model = SentenceTransformer(model_name)
+
+    @property
+    def name(self) -> str:
+        return self._model_name
+
+    def encode(self, texts: list[str]) -> list[list[float]]:
+        return self._model.encode(texts, show_progress_bar=False, convert_to_numpy=True).tolist()
+
 
 SYSTEM_PROMPT = (
     "Answer the question using ONLY the provided context. "
@@ -144,7 +176,7 @@ def get_chroma_collection(strategy: str) -> chromadb.Collection:
 
 # ---------- Ingestion ----------
 
-def ingest(strategy: str, embed_model: SentenceTransformer) -> None:
+def ingest(strategy: str, embedder: Embedder) -> None:
     collection = get_chroma_collection(strategy)
     pdfs = sorted(PAPERS_DIR.glob("*.pdf"))
     if not pdfs:
@@ -185,9 +217,7 @@ def ingest(strategy: str, embed_model: SentenceTransformer) -> None:
         if docs:
             BATCH = 128
             for i in range(0, len(docs), BATCH):
-                embeddings = embed_model.encode(
-                    docs[i : i + BATCH], show_progress_bar=False, convert_to_numpy=True
-                ).tolist()
+                embeddings = embedder.encode(docs[i : i + BATCH])
                 collection.upsert(
                     documents=docs[i : i + BATCH],
                     embeddings=embeddings,
@@ -206,7 +236,7 @@ def ingest(strategy: str, embed_model: SentenceTransformer) -> None:
 
 # ---------- Retrieval ----------
 
-def retrieve(query: str, strategy: str, embed_model: SentenceTransformer) -> list[dict]:
+def retrieve(query: str, strategy: str, embedder: Embedder) -> list[dict]:
     collection = get_chroma_collection(strategy)
     n = collection.count()
     if n == 0:
@@ -214,7 +244,7 @@ def retrieve(query: str, strategy: str, embed_model: SentenceTransformer) -> lis
             f"[red]Collection papers_{strategy} is empty. Run with --ingest first.[/red]"
         )
         return []
-    query_embedding = embed_model.encode([query]).tolist()
+    query_embedding = embedder.encode([query])
     results = collection.query(
         query_embeddings=query_embedding,
         n_results=min(TOP_K, n),
@@ -294,11 +324,11 @@ def show_answer(answer: str, strategy: str, compare: bool = False) -> None:
 def run_query(
     query: str,
     strategy: str,
-    embed_model: SentenceTransformer,
+    embedder: Embedder,
     verbose: bool,
     compare: bool = False,
 ) -> None:
-    chunks = retrieve(query, strategy, embed_model)
+    chunks = retrieve(query, strategy, embedder)
     if not chunks:
         return
     if verbose:
@@ -335,14 +365,14 @@ def main() -> None:
     )
 
     with console.status("[dim]Loading embedding model…[/dim]"):
-        embed_model = SentenceTransformer(EMBED_MODEL_NAME)
-    console.print(f"[green]✓[/green] Loaded [cyan]{EMBED_MODEL_NAME}[/cyan]\n")
+        embedder = SentenceTransformerEmbedder()
+    console.print(f"[green]✓[/green] Loaded [cyan]{embedder.name}[/cyan]\n")
 
     if args.ingest:
         strategies = ["recursive", "hierarchical"] if args.compare else [args.chunk_strategy]
         for s in strategies:
             console.rule(f"[magenta]Ingesting ({s})[/magenta]")
-            ingest(s, embed_model)
+            ingest(s, embedder)
         console.print()
 
     console.print("Type your question below. Enter [bold]quit[/bold] or [bold]exit[/bold] to stop.\n")
@@ -360,11 +390,11 @@ def main() -> None:
             break
         if args.compare:
             console.rule("[magenta]recursive[/magenta]")
-            run_query(query, "recursive", embed_model, args.verbose, compare=True)
+            run_query(query, "recursive", embedder, args.verbose, compare=True)
             console.rule("[magenta]hierarchical[/magenta]")
-            run_query(query, "hierarchical", embed_model, args.verbose, compare=True)
+            run_query(query, "hierarchical", embedder, args.verbose, compare=True)
         else:
-            run_query(query, args.chunk_strategy, embed_model, args.verbose)
+            run_query(query, args.chunk_strategy, embedder, args.verbose)
 
 
 if __name__ == "__main__":
