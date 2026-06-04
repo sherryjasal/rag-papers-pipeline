@@ -44,36 +44,13 @@ def load_test_set(path: Path = TEST_SET_PATH) -> list[dict]:
 
 
 def extract_paper_titles(chunks: list[dict]) -> list[str]:
-    """Convert chunk metadata sources to full paper titles (in retrieval order).
-
-    Handles: metadata.source = 'papers/attention-is-all-you-need.pdf'
-    Maps to: 'Attention Is All You Need' via PAPER_TITLES.
-    """
-    titles = []
-    for chunk in chunks:
-        meta = chunk.get("metadata", {})
-        raw = meta.get("source", "") if isinstance(meta, dict) else ""
-        if not raw:
-            raw = chunk.get("source", "")
-
-        # Normalize: get filename stem
-        stem = raw.rsplit("/", 1)[-1].rsplit("\\", 1)[-1]
-        if stem.endswith(".pdf"):
-            stem = stem[:-4]
-
-        # Map to full title
-        title = FILENAME_TO_TITLE.get(stem, stem)
-        titles.append(title)
-    return titles
+    """Return paper titles from chunk dicts (in retrieval order)."""
+    return [chunk.get("title", "") for chunk in chunks]
 
 
 def extract_chunk_texts(chunks: list[dict]) -> list[str]:
     """Pull text content from chunk dicts."""
-    texts = []
-    for chunk in chunks:
-        text = chunk.get("text", "") or chunk.get("document", "") or ""
-        texts.append(text)
-    return texts
+    return [chunk.get("context_text", "") for chunk in chunks]
 
 
 def evaluate_config(
