@@ -166,10 +166,10 @@ def chunk_hierarchical(text: str) -> list[dict]:
 
 # ---------- ChromaDB ----------
 
-def get_chroma_collection(strategy: str) -> chromadb.Collection:
+def get_chroma_collection(strategy: str, embedder_name: str) -> chromadb.Collection:
     client = chromadb.PersistentClient(path=str(CHROMA_DIR))
     return client.get_or_create_collection(
-        name=f"papers_{strategy}",
+        name=f"papers_{strategy}_{embedder_name}",
         metadata={"hnsw:space": "cosine"},
     )
 
@@ -177,7 +177,7 @@ def get_chroma_collection(strategy: str) -> chromadb.Collection:
 # ---------- Ingestion ----------
 
 def ingest(strategy: str, embedder: Embedder) -> None:
-    collection = get_chroma_collection(strategy)
+    collection = get_chroma_collection(strategy, embedder.name)
     pdfs = sorted(PAPERS_DIR.glob("*.pdf"))
     if not pdfs:
         console.print("[red]No PDFs found in papers/[/red]")
@@ -230,18 +230,18 @@ def ingest(strategy: str, embedder: Embedder) -> None:
             console.print("[dim]skipped (no text)[/dim]")
     console.print(
         f"\n[green]✓[/green] Ingested [yellow]{total}[/yellow] chunks "
-        f"into [cyan]papers_{strategy}[/cyan]"
+        f"into [cyan]papers_{strategy}_{embedder.name}[/cyan]"
     )
 
 
 # ---------- Retrieval ----------
 
 def retrieve(query: str, strategy: str, embedder: Embedder) -> list[dict]:
-    collection = get_chroma_collection(strategy)
+    collection = get_chroma_collection(strategy, embedder.name)
     n = collection.count()
     if n == 0:
         console.print(
-            f"[red]Collection papers_{strategy} is empty. Run with --ingest first.[/red]"
+            f"[red]Collection papers_{strategy}_{embedder.name} is empty. Run with --ingest first.[/red]"
         )
         return []
     query_embedding = embedder.encode([query])
