@@ -236,7 +236,7 @@ def ingest(strategy: str, embedder: Embedder) -> None:
 
 # ---------- Retrieval ----------
 
-def retrieve(query: str, strategy: str, embedder: Embedder) -> list[dict]:
+def retrieve(query: str, strategy: str, embedder: Embedder, top_k: int = TOP_K) -> list[dict]:
     collection = get_chroma_collection(strategy, embedder.name)
     n = collection.count()
     if n == 0:
@@ -247,7 +247,7 @@ def retrieve(query: str, strategy: str, embedder: Embedder) -> list[dict]:
     query_embedding = embedder.encode([query])
     results = collection.query(
         query_embeddings=query_embedding,
-        n_results=min(TOP_K, n),
+        n_results=min(top_k, n),
         include=["documents", "metadatas", "distances"],
     )
     chunks = []
@@ -327,8 +327,9 @@ def run_query(
     embedder: Embedder,
     verbose: bool,
     compare: bool = False,
+    top_k: int = TOP_K,
 ) -> None:
-    chunks = retrieve(query, strategy, embedder)
+    chunks = retrieve(query, strategy, embedder, top_k=top_k)
     if not chunks:
         return
     if verbose:
@@ -353,6 +354,8 @@ def main() -> None:
     parser.add_argument(
         "--compare", action="store_true", help="Run query against both strategies side by side"
     )
+    parser.add_argument("--top-k", type=int, default=TOP_K,
+        help=f"Number of chunks to retrieve (default: {TOP_K})")
     args = parser.parse_args()
 
     console.print(
@@ -390,11 +393,11 @@ def main() -> None:
             break
         if args.compare:
             console.rule("[magenta]recursive[/magenta]")
-            run_query(query, "recursive", embedder, args.verbose, compare=True)
+            run_query(query, "recursive", embedder, args.verbose, compare=True, top_k=args.top_k)
             console.rule("[magenta]hierarchical[/magenta]")
-            run_query(query, "hierarchical", embedder, args.verbose, compare=True)
+            run_query(query, "hierarchical", embedder, args.verbose, compare=True, top_k=args.top_k)
         else:
-            run_query(query, args.chunk_strategy, embedder, args.verbose)
+            run_query(query, args.chunk_strategy, embedder, args.verbose, top_k=args.top_k)
 
 
 if __name__ == "__main__":
