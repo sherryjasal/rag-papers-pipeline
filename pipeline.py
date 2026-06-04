@@ -81,6 +81,10 @@ PAPER_TITLES = {
     "deepseek-r1": "DeepSeek-R1",
 }
 
+EMBEDDER_REGISTRY = {
+    "minilm": lambda: SentenceTransformerEmbedder(EMBED_MODEL_NAME),
+}
+
 console = Console()
 
 
@@ -337,6 +341,26 @@ def run_query(
     with console.status(f"[dim]Asking {CLAUDE_MODEL}…[/dim]"):
         answer = generate(query, chunks)
     show_answer(answer, strategy, compare=compare)
+
+
+def run_config(
+    query: str,
+    strategy: str,
+    embedder_name: str,
+    top_k: int = TOP_K,
+) -> list[dict]:
+    """Run retrieval for a single config. Returns list of chunk dicts.
+
+    This is the programmatic entry point used by the eval harness.
+    No console output, no generation — just retrieval.
+    """
+    if embedder_name not in EMBEDDER_REGISTRY:
+        raise ValueError(
+            f"Unknown embedder '{embedder_name}'. "
+            f"Available: {list(EMBEDDER_REGISTRY.keys())}"
+        )
+    embedder = EMBEDDER_REGISTRY[embedder_name]()
+    return retrieve(query, strategy, embedder, top_k=top_k)
 
 
 # ---------- CLI ----------
