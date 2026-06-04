@@ -61,7 +61,9 @@ def ndcg_at_k(retrieved_papers: list[str], relevant_papers: list[str], k: int) -
     """Normalized Discounted Cumulative Gain at k.
 
     Binary relevance: 1 if paper is relevant, 0 otherwise.
-    NDCG@k = DCG@k / IDCG@k
+    Only the FIRST chunk from each relevant paper scores a hit.
+    This prevents duplicate chunks from inflating DCG beyond IDCG.
+    NDCG@k = DCG@k / IDCG@k, always in [0, 1].
     """
     if k <= 0:
         return 0.0
@@ -69,14 +71,16 @@ def ndcg_at_k(retrieved_papers: list[str], relevant_papers: list[str], k: int) -
         return 1.0
 
     relevant = set(relevant_papers)
+    seen_relevant = set()
 
-    # DCG
+    # DCG: only first occurrence of each relevant paper scores
     dcg = 0.0
     for i, paper in enumerate(retrieved_papers[:k]):
-        rel = 1.0 if paper in relevant else 0.0
-        dcg += rel / math.log2(i + 2)
+        if paper in relevant and paper not in seen_relevant:
+            dcg += 1.0 / math.log2(i + 2)
+            seen_relevant.add(paper)
 
-    # IDCG: best case — all relevant papers ranked at the top
+    # IDCG: best case — all relevant papers ranked at top positions
     ideal_hits = min(len(relevant), k)
     idcg = sum(1.0 / math.log2(i + 2) for i in range(ideal_hits))
 
