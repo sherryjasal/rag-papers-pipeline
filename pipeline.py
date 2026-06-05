@@ -62,6 +62,26 @@ class SentenceTransformerEmbedder(Embedder):
         return self._model.encode(texts, show_progress_bar=False, convert_to_numpy=True).tolist()
 
 
+class OpenAIEmbedder(Embedder):
+    """Embedder using OpenAI's API."""
+
+    def __init__(self, model_name: str = "text-embedding-3-small"):
+        from openai import OpenAI
+        self.client = OpenAI()
+        self.model_name = model_name
+
+    def encode(self, texts: list[str]) -> list[list[float]]:
+        response = self.client.embeddings.create(
+            input=texts,
+            model=self.model_name,
+        )
+        return [item.embedding for item in response.data]
+
+    @property
+    def name(self) -> str:
+        return self.model_name.replace("/", "-")
+
+
 SYSTEM_PROMPT = (
     "Answer the question using ONLY the provided context. "
     "Cite which paper each claim comes from in [Paper Title] format. "
@@ -82,7 +102,9 @@ PAPER_TITLES = {
 }
 
 EMBEDDER_REGISTRY = {
-    "minilm": lambda: SentenceTransformerEmbedder(EMBED_MODEL_NAME),
+    "minilm": lambda: SentenceTransformerEmbedder("all-MiniLM-L6-v2"),
+    "bge-small": lambda: SentenceTransformerEmbedder("BAAI/bge-small-en-v1.5"),
+    "openai": lambda: OpenAIEmbedder("text-embedding-3-small"),
 }
 
 console = Console()
