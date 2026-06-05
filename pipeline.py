@@ -56,7 +56,7 @@ class SentenceTransformerEmbedder(Embedder):
 
     @property
     def name(self) -> str:
-        return self._model_name
+        return self._model_name.replace("/", "-")
 
     def encode(self, texts: list[str]) -> list[list[float]]:
         return self._model.encode(texts, show_progress_bar=False, convert_to_numpy=True).tolist()
@@ -402,19 +402,25 @@ def main() -> None:
     )
     parser.add_argument("--top-k", type=int, default=TOP_K,
         help=f"Number of chunks to retrieve (default: {TOP_K})")
+    parser.add_argument(
+        "--embedder",
+        choices=list(EMBEDDER_REGISTRY.keys()),
+        default="minilm",
+        help=f"Embedder to use (default: minilm)",
+    )
     args = parser.parse_args()
 
     console.print(
         Panel.fit(
             "[bold cyan]RAG Papers Pipeline[/bold cyan]\n"
-            f"[dim]Embed: {EMBED_MODEL_NAME}  |  LLM: {CLAUDE_MODEL}  |  "
+            f"[dim]Embed: {args.embedder}  |  LLM: {CLAUDE_MODEL}  |  "
             f"Strategy: {'both' if args.compare else args.chunk_strategy}[/dim]",
             border_style="cyan",
         )
     )
 
     with console.status("[dim]Loading embedding model…[/dim]"):
-        embedder = SentenceTransformerEmbedder()
+        embedder = EMBEDDER_REGISTRY[args.embedder]()
     console.print(f"[green]✓[/green] Loaded [cyan]{embedder.name}[/cyan]\n")
 
     if args.ingest:
