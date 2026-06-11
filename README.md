@@ -3,7 +3,7 @@
 > Companion code for **AI Snippets Issue 4a — The Retrieval Layer: Chunking Strategies**.  
 > [Read the full breakdown →](https://thesherrycode.substack.com/p/i-tested-two-chunking-strategies)
 
-A local RAG (Retrieval-Augmented Generation) pipeline over 10 ML research papers. Uses ChromaDB for vector storage, `sentence-transformers` for local embeddings, and Claude for answer generation.
+A local RAG pipeline with a swap-in embedder interface (MiniLM, BGE-small, and OpenAI wired up — drop in any embedder behind the same interface) over 10 ML research papers. Uses ChromaDB for vector storage and Claude for answer generation.
 
 ## Papers included
 
@@ -104,6 +104,21 @@ python pipeline.py --compare --verbose
 **Recursive** splits at `\n\n` → `\n` → sentences → chars, merging pieces up to ~2048 characters with 15% overlap. Good for dense technical text.
 
 **Hierarchical** indexes individual sentences for precise retrieval but sends the full parent paragraph to Claude for richer context. Good when answers span multiple sentences in a paragraph.
+
+## Evaluation
+
+`eval_harness.py` runs a 15-query golden test set across all strategy × embedder configurations and reports 6 retrieval metrics: Precision@k, Recall@k, MRR, NDCG@k, Hit Rate, and KW Hit.
+
+### Results (k=5, 15 queries)
+
+| Config | P@5 | R@5 | MRR | NDCG@5 | Hit@5 | KW Hit | Time |
+|---|---|---|---|---|---|---|---|
+| recursive / openai | 0.840 | 0.933 | 0.950 | 0.915 | 1.000 | 0.900 | 10.7s |
+| hierarchical / minilm | 0.747 | 0.967 | 0.836 | 0.857 | 1.000 | 0.800 | 59.9s |
+| recursive / bge-small | 0.773 | 0.833 | 0.900 | 0.831 | 0.933 | 0.867 | 67.5s |
+| recursive / minilm | 0.707 | 0.867 | 0.856 | 0.818 | 0.933 | 0.822 | 68.4s |
+| hierarchical / bge-small | 0.733 | 0.933 | 0.822 | 0.811 | 1.000 | 0.833 | 73.7s |
+| hierarchical / openai | 0.733 | 0.933 | 0.819 | 0.811 | 1.000 | 0.700 | 11.8s |
 
 ## Project layout
 
