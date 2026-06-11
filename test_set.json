@@ -1,0 +1,77 @@
+[
+  {
+    "query": "How does the attention mechanism work in transformers?",
+    "expected_papers": ["Attention Is All You Need"],
+    "expected_keywords": ["scaled dot-product", "multi-head"]
+  },
+  {
+    "query": "What is BERT's pre-training objective?",
+    "expected_papers": ["BERT: Pre-training of Deep Bidirectional Transformers"],
+    "expected_keywords": ["masked language model", "next sentence prediction"]
+  },
+  {
+    "query": "How does GPT-3 achieve few-shot learning?",
+    "expected_papers": ["GPT-3: Language Models are Few-Shot Learners"],
+    "expected_keywords": ["in-context learning", "few-shot"]
+  },
+  {
+    "query": "What is retrieval-augmented generation?",
+    "expected_papers": ["Retrieval-Augmented Generation"],
+    "expected_keywords": ["retrieval", "generation", "knowledge"]
+  },
+  {
+    "query": "How does HyDE improve retrieval?",
+    "expected_papers": ["HyDE: Hypothetical Document Embeddings"],
+    "expected_keywords": ["hypothetical document", "embedding"]
+  },
+  {
+    "query": "What is LoRA and how does it reduce parameters?",
+    "expected_papers": ["LoRA: Low-Rank Adaptation of Large Language Models"],
+    "expected_keywords": ["low-rank", "adaptation"]
+  },
+  {
+    "query": "What is Constitutional AI?",
+    "expected_papers": ["Constitutional AI"],
+    "expected_keywords": ["constitution", "harmless"]
+  },
+  {
+    "query": "How does ReAct combine reasoning and acting?",
+    "expected_papers": ["ReAct: Reasoning and Acting"],
+    "expected_keywords": ["reason", "act", "thought"]
+  },
+  {
+    "query": "What is chain-of-thought prompting?",
+    "expected_papers": ["Chain-of-Thought Prompting"],
+    "expected_keywords": ["chain-of-thought", "reasoning"]
+  },
+  {
+    "query": "How does DeepSeek-R1 approach reasoning?",
+    "expected_papers": ["DeepSeek-R1"],
+    "expected_keywords": ["reasoning", "reinforcement learning"]
+  },
+  {
+    "query": "What are the differences between encoder and decoder architectures?",
+    "expected_papers": ["Attention Is All You Need", "BERT: Pre-training of Deep Bidirectional Transformers"],
+    "expected_keywords": ["encoder", "decoder"]
+  },
+  {
+    "query": "How do language models handle alignment with human preferences?",
+    "expected_papers": ["Constitutional AI"],
+    "expected_keywords": ["alignment", "human", "feedback"]
+  },
+  {
+    "query": "What techniques reduce the cost of fine-tuning large models?",
+    "expected_papers": ["LoRA: Low-Rank Adaptation of Large Language Models"],
+    "expected_keywords": ["parameter", "efficient", "fine-tun"]
+  },
+  {
+    "query": "How can external knowledge be integrated into language model responses?",
+    "expected_papers": ["Retrieval-Augmented Generation", "HyDE: Hypothetical Document Embeddings"],
+    "expected_keywords": ["retrieval", "knowledge", "document"]
+  },
+  {
+    "query": "What role does reinforcement learning play in training language models?",
+    "expected_papers": ["DeepSeek-R1", "Constitutional AI"],
+    "expected_keywords": ["reinforcement", "reward"]
+  }
+]

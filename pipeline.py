@@ -5,6 +5,7 @@ import os
 import re
 import sys
 import argparse
+from abc import ABC, abstractmethod
 from pathlib import Path
 
 import fitz  # PyMuPDF
@@ -30,6 +31,57 @@ CHUNK_CHARS = CHUNK_TOKENS * CHARS_PER_TOKEN  # 2048 chars ≈ 512 tokens
 OVERLAP_CHARS = int(CHUNK_CHARS * 0.15)       # ~307 chars (15% overlap)
 MIN_SENTENCE_LEN = 20
 
+
+# ---------- Embedder abstraction ----------
+
+class Embedder(ABC):
+    """Common interface for all embedding backends."""
+
+    @property
+    @abstractmethod
+    def name(self) -> str:
+        """Short identifier used in collection names and logs."""
+
+    @abstractmethod
+    def encode(self, texts: list[str]) -> list[list[float]]:
+        """Return a list of embedding vectors (one per input text)."""
+
+
+class SentenceTransformerEmbedder(Embedder):
+    """Wraps any sentence-transformers model behind the Embedder interface."""
+
+    def __init__(self, model_name: str = EMBED_MODEL_NAME):
+        self._model_name = model_name
+        self._model = SentenceTransformer(model_name)
+
+    @property
+    def name(self) -> str:
+        return self._model_name.replace("/", "-")
+
+    def encode(self, texts: list[str]) -> list[list[float]]:
+        return self._model.encode(texts, show_progress_bar=False, convert_to_numpy=True).tolist()
+
+
+class OpenAIEmbedder(Embedder):
+    """Embedder using OpenAI's API."""
+
+    def __init__(self, model_name: str = "text-embedding-3-small"):
+        from openai import OpenAI
+        self.client = OpenAI()
+        self.model_name = model_name
+
+    def encode(self, texts: list[str]) -> list[list[float]]:
+        response = self.client.embeddings.create(
+            input=texts,
+            model=self.model_name,
+        )
+        return [item.embedding for item in response.data]
+
+    @property
+    def name(self) -> str:
+        return self.model_name.replace("/", "-")
+
+
 SYSTEM_PROMPT = (
     "Answer the question using ONLY the provided context. "
     "Cite which paper each claim comes from in [Paper Title] format. "
@@ -47,6 +99,12 @@ PAPER_TITLES = {
     "react": "ReAct: Reasoning and Acting",
     "chain-of-thought": "Chain-of-Thought Prompting",
     "deepseek-r1": "DeepSeek-R1",
+}
+
+EMBEDDER_REGISTRY = {
+    "minilm": lambda: SentenceTransformerEmbedder("all-MiniLM-L6-v2"),
+    "bge-small": lambda: SentenceTransformerEmbedder("BAAI/bge-small-en-v1.5"),
+    "openai": lambda: OpenAIEmbedder("text-embedding-3-small"),
 }
 
 console = Console()
@@ -134,18 +192,18 @@ def chunk_hierarchical(text: str) -> list[dict]:
 
 # ---------- ChromaDB ----------
 
-def get_chroma_collection(strategy: str) -> chromadb.Collection:
+def get_chroma_collection(strategy: str, embedder_name: str) -> chromadb.Collection:
     client = chromadb.PersistentClient(path=str(CHROMA_DIR))
     return client.get_or_create_collection(
-        name=f"papers_{strategy}",
+        name=f"papers_{strategy}_{embedder_name}",
         metadata={"hnsw:space": "cosine"},
     )
 
 
 # ---------- Ingestion ----------
 
-def ingest(strategy: str, embed_model: SentenceTransformer) -> None:
-    collection = get_chroma_collection(strategy)
+def ingest(strategy: str, embedder: Embedder) -> None:
+    collection = get_chroma_collection(strategy, embedder.name)
     pdfs = sorted(PAPERS_DIR.glob("*.pdf"))
     if not pdfs:
         console.print("[red]No PDFs found in papers/[/red]")
@@ -185,9 +243,7 @@ def ingest(strategy: str, embed_model: SentenceTransformer) -> None:
         if docs:
             BATCH = 128
             for i in range(0, len(docs), BATCH):
-                embeddings = embed_model.encode(
-                    docs[i : i + BATCH], show_progress_bar=False, convert_to_numpy=True
-                ).tolist()
+                embeddings = embedder.encode(docs[i : i + BATCH])
                 collection.upsert(
                     documents=docs[i : i + BATCH],
                     embeddings=embeddings,
@@ -200,24 +256,24 @@ def ingest(strategy: str, embed_model: SentenceTransformer) -> None:
             console.print("[dim]skipped (no text)[/dim]")
     console.print(
         f"\n[green]✓[/green] Ingested [yellow]{total}[/yellow] chunks "
-        f"into [cyan]papers_{strategy}[/cyan]"
+        f"into [cyan]papers_{strategy}_{embedder.name}[/cyan]"
     )
 
 
 # ---------- Retrieval ----------
 
-def retrieve(query: str, strategy: str, embed_model: SentenceTransformer) -> list[dict]:
-    collection = get_chroma_collection(strategy)
+def retrieve(query: str, strategy: str, embedder: Embedder, top_k: int = TOP_K) -> list[dict]:
+    collection = get_chroma_collection(strategy, embedder.name)
     n = collection.count()
     if n == 0:
         console.print(
-            f"[red]Collection papers_{strategy} is empty. Run with --ingest first.[/red]"
+            f"[red]Collection papers_{strategy}_{embedder.name} is empty. Run with --ingest first.[/red]"
         )
         return []
-    query_embedding = embed_model.encode([query]).tolist()
+    query_embedding = embedder.encode([query])
     results = collection.query(
         query_embeddings=query_embedding,
-        n_results=min(TOP_K, n),
+        n_results=min(top_k, n),
         include=["documents", "metadatas", "distances"],
     )
     chunks = []
@@ -294,11 +350,12 @@ def show_answer(answer: str, strategy: str, compare: bool = False) -> None:
 def run_query(
     query: str,
     strategy: str,
-    embed_model: SentenceTransformer,
+    embedder: Embedder,
     verbose: bool,
     compare: bool = False,
+    top_k: int = TOP_K,
 ) -> None:
-    chunks = retrieve(query, strategy, embed_model)
+    chunks = retrieve(query, strategy, embedder, top_k=top_k)
     if not chunks:
         return
     if verbose:
@@ -306,6 +363,26 @@ def run_query(
     with console.status(f"[dim]Asking {CLAUDE_MODEL}…[/dim]"):
         answer = generate(query, chunks)
     show_answer(answer, strategy, compare=compare)
+
+
+def run_config(
+    query: str,
+    strategy: str,
+    embedder_name: str,
+    top_k: int = TOP_K,
+) -> list[dict]:
+    """Run retrieval for a single config. Returns list of chunk dicts.
+
+    This is the programmatic entry point used by the eval harness.
+    No console output, no generation — just retrieval.
+    """
+    if embedder_name not in EMBEDDER_REGISTRY:
+        raise ValueError(
+            f"Unknown embedder '{embedder_name}'. "
+            f"Available: {list(EMBEDDER_REGISTRY.keys())}"
+        )
+    embedder = EMBEDDER_REGISTRY[embedder_name]()
+    return retrieve(query, strategy, embedder, top_k=top_k)
 
 
 # ---------- CLI ----------
@@ -323,26 +400,34 @@ def main() -> None:
     parser.add_argument(
         "--compare", action="store_true", help="Run query against both strategies side by side"
     )
+    parser.add_argument("--top-k", type=int, default=TOP_K,
+        help=f"Number of chunks to retrieve (default: {TOP_K})")
+    parser.add_argument(
+        "--embedder",
+        choices=list(EMBEDDER_REGISTRY.keys()),
+        default="minilm",
+        help=f"Embedder to use (default: minilm)",
+    )
     args = parser.parse_args()
 
     console.print(
         Panel.fit(
             "[bold cyan]RAG Papers Pipeline[/bold cyan]\n"
-            f"[dim]Embed: {EMBED_MODEL_NAME}  |  LLM: {CLAUDE_MODEL}  |  "
+            f"[dim]Embed: {args.embedder}  |  LLM: {CLAUDE_MODEL}  |  "
             f"Strategy: {'both' if args.compare else args.chunk_strategy}[/dim]",
             border_style="cyan",
         )
     )
 
     with console.status("[dim]Loading embedding model…[/dim]"):
-        embed_model = SentenceTransformer(EMBED_MODEL_NAME)
-    console.print(f"[green]✓[/green] Loaded [cyan]{EMBED_MODEL_NAME}[/cyan]\n")
+        embedder = EMBEDDER_REGISTRY[args.embedder]()
+    console.print(f"[green]✓[/green] Loaded [cyan]{embedder.name}[/cyan]\n")
 
     if args.ingest:
         strategies = ["recursive", "hierarchical"] if args.compare else [args.chunk_strategy]
         for s in strategies:
             console.rule(f"[magenta]Ingesting ({s})[/magenta]")
-            ingest(s, embed_model)
+            ingest(s, embedder)
         console.print()
 
     console.print("Type your question below. Enter [bold]quit[/bold] or [bold]exit[/bold] to stop.\n")
@@ -360,11 +445,11 @@ def main() -> None:
             break
         if args.compare:
             console.rule("[magenta]recursive[/magenta]")
-            run_query(query, "recursive", embed_model, args.verbose, compare=True)
+            run_query(query, "recursive", embedder, args.verbose, compare=True, top_k=args.top_k)
             console.rule("[magenta]hierarchical[/magenta]")
-            run_query(query, "hierarchical", embed_model, args.verbose, compare=True)
+            run_query(query, "hierarchical", embedder, args.verbose, compare=True, top_k=args.top_k)
         else:
-            run_query(query, args.chunk_strategy, embed_model, args.verbose)
+            run_query(query, args.chunk_strategy, embedder, args.verbose, top_k=args.top_k)
 
 
 if __name__ == "__main__":
