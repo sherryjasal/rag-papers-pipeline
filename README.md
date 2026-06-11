@@ -1,7 +1,12 @@
 # RAG Papers Pipeline
 
-> Companion code for **AI Snippets Issue 4a — The Retrieval Layer: Chunking Strategies**.  
-> [Read the full breakdown →](https://thesherrycode.substack.com/p/i-tested-two-chunking-strategies)
+A local RAG pipeline over 10 ML research papers with a formal retrieval evaluation harness.
+
+> Companion code for the **AI Snippets** retrieval series:
+> - [Issue 4a — Chunking Strategies →](https://thesherrycode.substack.com/p/i-tested-two-chunking-strategies)
+> - [Issue 4b — Retrieval Evaluation →](https://thesherrycode.substack.com/p/i-was-wrong-about-chunking)
+
+![Configuration Matrix](docs/images/configuration-matrix.svg)
 
 A local RAG pipeline with a swap-in embedder interface (MiniLM, BGE-small, and OpenAI wired up — drop in any embedder behind the same interface) over 10 ML research papers. Uses ChromaDB for vector storage and Claude for answer generation.
 
@@ -110,6 +115,8 @@ python pipeline.py --compare --verbose
 `eval_harness.py` runs a 15-query golden test set across all strategy × embedder configurations and reports 6 retrieval metrics: Precision@k, Recall@k, MRR, NDCG@k, Hit Rate, and KW Hit.
 
 ### Results (k=5, 15 queries)
+
+![Results](docs/images/results-table.svg)
 
 | Config | P@5 | R@5 | MRR | NDCG@5 | Hit@5 | KW Hit | Time |
 |---|---|---|---|---|---|---|---|
