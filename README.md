@@ -118,15 +118,6 @@ python pipeline.py --compare --verbose
 
 ![Results](docs/images/results-table.png)
 
-| Config | P@5 | R@5 | MRR | NDCG@5 | Hit@5 | KW Hit | Time |
-|---|---|---|---|---|---|---|---|
-| recursive / openai | 0.840 | 0.933 | 0.950 | 0.915 | 1.000 | 0.900 | 10.7s |
-| hierarchical / minilm | 0.747 | 0.967 | 0.836 | 0.857 | 1.000 | 0.800 | 59.9s |
-| recursive / bge-small | 0.773 | 0.833 | 0.900 | 0.831 | 0.933 | 0.867 | 67.5s |
-| recursive / minilm | 0.707 | 0.867 | 0.856 | 0.818 | 0.933 | 0.822 | 68.4s |
-| hierarchical / bge-small | 0.733 | 0.933 | 0.822 | 0.811 | 1.000 | 0.833 | 73.7s |
-| hierarchical / openai | 0.733 | 0.933 | 0.819 | 0.811 | 1.000 | 0.700 | 11.8s |
-
 ## Project layout
 
 ```
