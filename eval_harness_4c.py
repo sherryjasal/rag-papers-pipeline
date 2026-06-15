@@ -24,7 +24,7 @@ import json
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Any
 
 from rich.console import Console
 from rich.table import Table
@@ -41,6 +41,7 @@ from retrieval_4c import (
     CrossEncoderReranker,
     RERANKER_MODEL,
     RRF_K,
+    _dense_retrieve,
     retrieve_reranked,
     retrieve_hybrid,
     retrieve_hybrid_reranked,
@@ -140,10 +141,12 @@ def build_configs(reranker: CrossEncoderReranker) -> list[RunConfig]:
         return emb_cache[name]
 
     # ── Baselines (re-run for reference) ──────────────────────────────────
+    # Use _dense_retrieve (not run_config) so chunk dicts carry an "embedding"
+    # field — required for mean_pairwise_similarity_at_k (MPS@5).
     for emb_name in ["minilm", "bge-small", "openai"]:
         configs.append(RunConfig(
             label=f"baseline  recursive/{emb_name}",
-            retrieve=lambda q, e=emb_name: run_config(q, "recursive", e, TOP_K),
+            retrieve=lambda q, e=emb_name: _dense_retrieve(q, "recursive", get_emb(e), TOP_K),
             meta={"mode": "baseline", "strategy": "recursive", "embedder": emb_name},
         ))
 
@@ -252,6 +255,48 @@ def print_category_breakdown(all_results: list[dict]) -> None:
     console.print()
 
 
+def print_diversity_table(all_results: list[dict]) -> None:
+    """Focused two-metric table: UniSrc@5 and MPS@5 per config."""
+    table = Table(title="Diversity metrics (UniSrc@5, MPS@5)", show_lines=True)
+    table.add_column("Config", style="bold cyan")
+    table.add_column("UniSrc@5", justify="right")
+    table.add_column("MPS@5", justify="right")
+    for r in all_results:
+        a = r["aggregate"]
+        table.add_row(
+            r["config"],
+            f"{a.get('unique_src@5', 0):.2f}",
+            f"{a.get('mps@5', 0):.3f}",
+        )
+    console.print(table)
+    console.print()
+
+
+def save_results(all_results: list[dict], path: Path) -> None:
+    """Persist all aggregate + per-query dicts to JSON."""
+    def _make_serialisable(obj: Any) -> Any:
+        if isinstance(obj, dict):
+            return {k: _make_serialisable(v) for k, v in obj.items()}
+        if isinstance(obj, list):
+            return [_make_serialisable(v) for v in obj]
+        if isinstance(obj, float):
+            return round(obj, 6)
+        return obj
+
+    payload = {
+        "metadata": {
+            "top_k": TOP_K,
+            "rrf_k": RRF_K,
+            "reranker_model": RERANKER_MODEL,
+            "n_queries": 15,
+        },
+        "results": _make_serialisable(all_results),
+    }
+    with open(path, "w") as f:
+        json.dump(payload, f, indent=2)
+    console.print(f"[green]✓[/green] Results saved → [cyan]{path}[/cyan]")
+
+
 def print_failure_query_breakdown(all_results: list[dict], queries: list[dict]) -> None:
     """Per-query detail for the 4b failure queries."""
     console.rule("[bold]4b Failure Queries — Per-Config Detail[/bold]")
@@ -289,6 +334,25 @@ def print_failure_query_breakdown(all_results: list[dict], queries: list[dict]) 
 
 
 def main() -> None:
+    import argparse
+    parser = argparse.ArgumentParser(description="Issue 4c retrieval experiment harness")
+    parser.add_argument(
+        "--modes",
+        default=None,
+        help="Comma-separated list of modes to run (e.g. baseline,rerank). "
+             "Valid: baseline, rerank, hybrid, hybrid+rerank, hierarchical_parent. "
+             "Omit to run all.",
+    )
+    parser.add_argument(
+        "--save-results",
+        metavar="FILE",
+        default=None,
+        help="Write all aggregate + per-query results (incl. MPS@5) to this JSON file.",
+    )
+    args = parser.parse_args()
+
+    mode_filter = {m.strip() for m in args.modes.split(",")} if args.modes else None
+
     queries = load_test_set()
 
     console.print()
@@ -297,6 +361,8 @@ def main() -> None:
     console.print(f"  Top-k:         {TOP_K}")
     console.print(f"  RRF_K:         {RRF_K}")
     console.print(f"  Reranker:      {RERANKER_MODEL}")
+    if mode_filter:
+        console.print(f"  Modes filter:  {', '.join(sorted(mode_filter))}")
     console.print()
 
     console.print("  Loading cross-encoder reranker...", end=" ")
@@ -305,7 +371,11 @@ def main() -> None:
     console.print(f"[green]done[/green] ({time.perf_counter() - t_load:.1f}s)")
     console.print()
 
-    configs = build_configs(reranker)
+    all_configs = build_configs(reranker)
+    configs = (
+        [c for c in all_configs if c.meta.get("mode") in mode_filter]
+        if mode_filter else all_configs
+    )
     console.print(f"  Configs to run: {len(configs)}\n")
 
     all_results = []
@@ -327,10 +397,15 @@ def main() -> None:
     console.print(f"\n  Total runtime: {total_elapsed:.1f}s\n")
 
     print_summary(all_results)
-    print_category_breakdown(all_results)
-    print_failure_query_breakdown(all_results, queries)
+    print_diversity_table(all_results)
 
-    # Report any errored configs
+    if not mode_filter:
+        print_category_breakdown(all_results)
+        print_failure_query_breakdown(all_results, queries)
+
+    if args.save_results:
+        save_results(all_results, Path(args.save_results))
+
     errored = [r for r in all_results if r["errors"]]
     if errored:
         console.rule("[bold red]Errored Configs[/bold red]")
