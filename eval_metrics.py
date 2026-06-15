@@ -7,8 +7,9 @@ and return scores. No pipeline imports, no side effects.
 Two types of scoring:
 1. Paper-level: did the right papers appear in top-k?
 2. Keyword-level: do retrieved chunks contain expected terms?
+3. Diversity: unique sources and near-duplicate flooding (added for 4c).
 
-Built for AI Snippets Issue 4b — Retrieval Layer Evaluation.
+Built for AI Snippets Issues 4b–4c — Retrieval Layer Evaluation.
 """
 
 from __future__ import annotations
@@ -116,6 +117,48 @@ def keyword_hit_rate(chunk_texts: list[str], expected_keywords: list[str]) -> fl
     combined_text = " ".join(chunk_texts).lower()
     hits = sum(1 for kw in expected_keywords if kw.lower() in combined_text)
     return hits / len(expected_keywords)
+
+
+# ---------- Diversity Metrics (4c) ----------
+
+def unique_source_count_at_k(retrieved_papers: list[str], k: int) -> float:
+    """Number of distinct source papers in top-k retrieved results.
+
+    Returns a raw count (not a rate), so values range from 0 to k.
+    Measures near-duplicate flooding: a config returning 5 chunks from
+    1 paper scores 1.0; one returning 5 different papers scores 5.0.
+    """
+    if k <= 0:
+        return 0.0
+    return float(len(set(retrieved_papers[:k])))
+
+
+def mean_pairwise_similarity_at_k(embeddings: list[list[float]], k: int) -> float:
+    """Average cosine similarity among top-k retrieved chunk embeddings.
+
+    Computed using the embeddings produced by the SAME model that did retrieval
+    (passed in by the caller). High values indicate near-duplicate chunks.
+    Returns 0.0 if fewer than 2 chunks have embeddings.
+    """
+    import math as _math
+    vecs = embeddings[:k]
+    n = len(vecs)
+    if n < 2:
+        return 0.0
+
+    # L2-normalize each vector
+    normed = []
+    for v in vecs:
+        norm = _math.sqrt(sum(x * x for x in v))
+        normed.append([x / norm for x in v] if norm > 0 else list(v))
+
+    # Average cosine similarity over all unique pairs (upper triangle)
+    total, count = 0.0, 0
+    for i in range(n):
+        for j in range(i + 1, n):
+            total += sum(a * b for a, b in zip(normed[i], normed[j]))
+            count += 1
+    return total / count if count > 0 else 0.0
 
 
 # ---------- Aggregate Helpers ----------

@@ -5,3 +5,4 @@ anthropic==0.109.1
 python-dotenv==1.2.1
 rich==15.0.0
 openai==2.41.1
+rank-bm25==0.2.2
