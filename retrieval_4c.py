@@ -160,12 +160,13 @@ def retrieve_hybrid(
     embedder: Embedder,
     top_k: int = TOP_K,
     n_dense: int = 50,
+    rrf_k: int = RRF_K,
 ) -> list[dict]:
     """BM25 + dense retrieval fused with RRF. Recursive strategy only.
 
     Dense retrieves top n_dense by cosine similarity.
     BM25 ranks the full corpus.
-    RRF_K=60 fuses the two ranked lists.
+    rrf_k controls RRF fusion constant (default RRF_K=60).
     """
     strategy = "recursive"
     bm25, corpus, text_to_idx = _build_bm25_corpus(strategy, embedder.name)
@@ -180,7 +181,7 @@ def retrieve_hybrid(
     bm25_scores = bm25.get_scores(query.lower().split())
     bm25_ranked = sorted(range(len(corpus)), key=lambda i: bm25_scores[i], reverse=True)
 
-    fused = _rrf_fuse([dense_ranked, bm25_ranked], k=RRF_K)
+    fused = _rrf_fuse([dense_ranked, bm25_ranked], k=rrf_k)
 
     dense_score_map = {c["matched_text"]: c["similarity"] for c in dense_chunks}
     result = []

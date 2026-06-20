@@ -1,0 +1,1653 @@
+{
+  "metadata": {
+    "top_k": 5,
+    "rrf_k_values": [
+      10,
+      30,
+      60
+    ],
+    "embedders": [
+      "minilm",
+      "bge-small",
+      "openai"
+    ],
+    "n_queries": 15,
+    "baseline_source": "/Users/sherryjasal/rag-papers-pipeline/results_4c.json"
+  },
+  "baseline_ndcg": {
+    "baseline  recursive/minilm": 0.818463,
+    "baseline  recursive/bge-small": 0.831358,
+    "baseline  recursive/openai": 0.915171
+  },
+  "results": [
+    {
+      "config": "hybrid  recursive/minilm rrf_k=10",
+      "embedder": "minilm",
+      "rrf_k": 10,
+      "aggregate": {
+        "precision@5": 0.7866666666666667,
+        "recall@5": 0.8666666666666667,
+        "mrr": 0.85,
+        "ndcg@5": 0.8238993316296174,
+        "hit_rate@5": 0.9333333333333333,
+        "keyword_hit_rate": 0.8666666666666666
+      },
+      "per_query": [
+        {
+          "query": "How does the attention mechanism work in transformers?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is BERT's pre-training objective?",
+          "scores": {
+            "precision@5": 0.8,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does GPT-3 achieve few-shot learning?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is retrieval-augmented generation?",
+          "scores": {
+            "precision@5": 0.6,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does HyDE improve retrieval?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is LoRA and how does it reduce parameters?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.5
+          }
+        },
+        {
+          "query": "What is Constitutional AI?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does ReAct combine reasoning and acting?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is chain-of-thought prompting?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does DeepSeek-R1 approach reasoning?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.5
+          }
+        },
+        {
+          "query": "What are the differences between encoder and decoder architectures?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 0.5,
+            "mrr": 1.0,
+            "ndcg@5": 0.6131471927654584,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How do language models handle alignment with human preferences?",
+          "scores": {
+            "precision@5": 0.0,
+            "recall@5": 0.0,
+            "mrr": 0.0,
+            "ndcg@5": 0.0,
+            "hit_rate@5": 0.0,
+            "keyword_hit_rate": 0.6666666666666666
+          }
+        },
+        {
+          "query": "What techniques reduce the cost of fine-tuning large models?",
+          "scores": {
+            "precision@5": 0.6,
+            "recall@5": 1.0,
+            "mrr": 0.5,
+            "ndcg@5": 0.6309297535714575,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.6666666666666666
+          }
+        },
+        {
+          "query": "How can external knowledge be integrated into language model responses?",
+          "scores": {
+            "precision@5": 0.4,
+            "recall@5": 0.5,
+            "mrr": 1.0,
+            "ndcg@5": 0.6131471927654584,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.6666666666666666
+          }
+        },
+        {
+          "query": "What role does reinforcement learning play in training language models?",
+          "scores": {
+            "precision@5": 0.4,
+            "recall@5": 1.0,
+            "mrr": 0.25,
+            "ndcg@5": 0.5012658353418871,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        }
+      ],
+      "elapsed": 2.77
+    },
+    {
+      "config": "hybrid  recursive/minilm rrf_k=30",
+      "embedder": "minilm",
+      "rrf_k": 30,
+      "aggregate": {
+        "precision@5": 0.7599999999999999,
+        "recall@5": 0.8333333333333334,
+        "mrr": 0.85,
+        "ndcg@5": 0.808086150778331,
+        "hit_rate@5": 0.9333333333333333,
+        "keyword_hit_rate": 0.8999999999999999
+      },
+      "per_query": [
+        {
+          "query": "How does the attention mechanism work in transformers?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is BERT's pre-training objective?",
+          "scores": {
+            "precision@5": 0.8,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does GPT-3 achieve few-shot learning?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is retrieval-augmented generation?",
+          "scores": {
+            "precision@5": 0.6,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does HyDE improve retrieval?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is LoRA and how does it reduce parameters?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is Constitutional AI?",
+          "scores": {
+            "precision@5": 0.8,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does ReAct combine reasoning and acting?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is chain-of-thought prompting?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does DeepSeek-R1 approach reasoning?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.5
+          }
+        },
+        {
+          "query": "What are the differences between encoder and decoder architectures?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 0.5,
+            "mrr": 1.0,
+            "ndcg@5": 0.6131471927654584,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How do language models handle alignment with human preferences?",
+          "scores": {
+            "precision@5": 0.0,
+            "recall@5": 0.0,
+            "mrr": 0.0,
+            "ndcg@5": 0.0,
+            "hit_rate@5": 0.0,
+            "keyword_hit_rate": 0.6666666666666666
+          }
+        },
+        {
+          "query": "What techniques reduce the cost of fine-tuning large models?",
+          "scores": {
+            "precision@5": 0.6,
+            "recall@5": 1.0,
+            "mrr": 0.5,
+            "ndcg@5": 0.6309297535714575,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.6666666666666666
+          }
+        },
+        {
+          "query": "How can external knowledge be integrated into language model responses?",
+          "scores": {
+            "precision@5": 0.4,
+            "recall@5": 0.5,
+            "mrr": 1.0,
+            "ndcg@5": 0.6131471927654584,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.6666666666666666
+          }
+        },
+        {
+          "query": "What role does reinforcement learning play in training language models?",
+          "scores": {
+            "precision@5": 0.2,
+            "recall@5": 0.5,
+            "mrr": 0.25,
+            "ndcg@5": 0.2640681225725909,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        }
+      ],
+      "elapsed": 1.51
+    },
+    {
+      "config": "hybrid  recursive/minilm rrf_k=60",
+      "embedder": "minilm",
+      "rrf_k": 60,
+      "aggregate": {
+        "precision@5": 0.7999999999999999,
+        "recall@5": 0.9,
+        "mrr": 0.8633333333333333,
+        "ndcg@5": 0.8338763379273004,
+        "hit_rate@5": 1.0,
+        "keyword_hit_rate": 0.9222222222222222
+      },
+      "per_query": [
+        {
+          "query": "How does the attention mechanism work in transformers?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is BERT's pre-training objective?",
+          "scores": {
+            "precision@5": 0.8,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does GPT-3 achieve few-shot learning?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is retrieval-augmented generation?",
+          "scores": {
+            "precision@5": 0.8,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does HyDE improve retrieval?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is LoRA and how does it reduce parameters?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is Constitutional AI?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does ReAct combine reasoning and acting?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is chain-of-thought prompting?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does DeepSeek-R1 approach reasoning?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.5
+          }
+        },
+        {
+          "query": "What are the differences between encoder and decoder architectures?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 0.5,
+            "mrr": 1.0,
+            "ndcg@5": 0.6131471927654584,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How do language models handle alignment with human preferences?",
+          "scores": {
+            "precision@5": 0.2,
+            "recall@5": 1.0,
+            "mrr": 0.2,
+            "ndcg@5": 0.38685280723454163,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What techniques reduce the cost of fine-tuning large models?",
+          "scores": {
+            "precision@5": 0.6,
+            "recall@5": 1.0,
+            "mrr": 0.5,
+            "ndcg@5": 0.6309297535714575,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.6666666666666666
+          }
+        },
+        {
+          "query": "How can external knowledge be integrated into language model responses?",
+          "scores": {
+            "precision@5": 0.4,
+            "recall@5": 0.5,
+            "mrr": 1.0,
+            "ndcg@5": 0.6131471927654584,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.6666666666666666
+          }
+        },
+        {
+          "query": "What role does reinforcement learning play in training language models?",
+          "scores": {
+            "precision@5": 0.2,
+            "recall@5": 0.5,
+            "mrr": 0.25,
+            "ndcg@5": 0.2640681225725909,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        }
+      ],
+      "elapsed": 1.37
+    },
+    {
+      "config": "hybrid  recursive/bge-small rrf_k=10",
+      "embedder": "bge-small",
+      "rrf_k": 10,
+      "aggregate": {
+        "precision@5": 0.7733333333333333,
+        "recall@5": 0.8333333333333334,
+        "mrr": 0.8666666666666667,
+        "ndcg@5": 0.8067534056959527,
+        "hit_rate@5": 0.9333333333333333,
+        "keyword_hit_rate": 0.8666666666666666
+      },
+      "per_query": [
+        {
+          "query": "How does the attention mechanism work in transformers?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is BERT's pre-training objective?",
+          "scores": {
+            "precision@5": 0.8,
+            "recall@5": 1.0,
+            "mrr": 0.5,
+            "ndcg@5": 0.6309297535714575,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.5
+          }
+        },
+        {
+          "query": "How does GPT-3 achieve few-shot learning?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is retrieval-augmented generation?",
+          "scores": {
+            "precision@5": 0.6,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does HyDE improve retrieval?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is LoRA and how does it reduce parameters?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.5
+          }
+        },
+        {
+          "query": "What is Constitutional AI?",
+          "scores": {
+            "precision@5": 0.8,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does ReAct combine reasoning and acting?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is chain-of-thought prompting?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does DeepSeek-R1 approach reasoning?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What are the differences between encoder and decoder architectures?",
+          "scores": {
+            "precision@5": 0.8,
+            "recall@5": 0.5,
+            "mrr": 1.0,
+            "ndcg@5": 0.6131471927654584,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How do language models handle alignment with human preferences?",
+          "scores": {
+            "precision@5": 0.0,
+            "recall@5": 0.0,
+            "mrr": 0.0,
+            "ndcg@5": 0.0,
+            "hit_rate@5": 0.0,
+            "keyword_hit_rate": 0.6666666666666666
+          }
+        },
+        {
+          "query": "What techniques reduce the cost of fine-tuning large models?",
+          "scores": {
+            "precision@5": 0.6,
+            "recall@5": 1.0,
+            "mrr": 0.5,
+            "ndcg@5": 0.6309297535714575,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.6666666666666666
+          }
+        },
+        {
+          "query": "How can external knowledge be integrated into language model responses?",
+          "scores": {
+            "precision@5": 0.4,
+            "recall@5": 0.5,
+            "mrr": 1.0,
+            "ndcg@5": 0.6131471927654584,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.6666666666666666
+          }
+        },
+        {
+          "query": "What role does reinforcement learning play in training language models?",
+          "scores": {
+            "precision@5": 0.6,
+            "recall@5": 0.5,
+            "mrr": 1.0,
+            "ndcg@5": 0.6131471927654584,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        }
+      ],
+      "elapsed": 1.68
+    },
+    {
+      "config": "hybrid  recursive/bge-small rrf_k=30",
+      "embedder": "bge-small",
+      "rrf_k": 30,
+      "aggregate": {
+        "precision@5": 0.8,
+        "recall@5": 0.8333333333333334,
+        "mrr": 0.8666666666666667,
+        "ndcg@5": 0.8067534056959527,
+        "hit_rate@5": 0.9333333333333333,
+        "keyword_hit_rate": 0.8999999999999999
+      },
+      "per_query": [
+        {
+          "query": "How does the attention mechanism work in transformers?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is BERT's pre-training objective?",
+          "scores": {
+            "precision@5": 0.8,
+            "recall@5": 1.0,
+            "mrr": 0.5,
+            "ndcg@5": 0.6309297535714575,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.5
+          }
+        },
+        {
+          "query": "How does GPT-3 achieve few-shot learning?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is retrieval-augmented generation?",
+          "scores": {
+            "precision@5": 0.8,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does HyDE improve retrieval?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is LoRA and how does it reduce parameters?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is Constitutional AI?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does ReAct combine reasoning and acting?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is chain-of-thought prompting?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does DeepSeek-R1 approach reasoning?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What are the differences between encoder and decoder architectures?",
+          "scores": {
+            "precision@5": 0.8,
+            "recall@5": 0.5,
+            "mrr": 1.0,
+            "ndcg@5": 0.6131471927654584,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How do language models handle alignment with human preferences?",
+          "scores": {
+            "precision@5": 0.0,
+            "recall@5": 0.0,
+            "mrr": 0.0,
+            "ndcg@5": 0.0,
+            "hit_rate@5": 0.0,
+            "keyword_hit_rate": 0.6666666666666666
+          }
+        },
+        {
+          "query": "What techniques reduce the cost of fine-tuning large models?",
+          "scores": {
+            "precision@5": 0.6,
+            "recall@5": 1.0,
+            "mrr": 0.5,
+            "ndcg@5": 0.6309297535714575,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.6666666666666666
+          }
+        },
+        {
+          "query": "How can external knowledge be integrated into language model responses?",
+          "scores": {
+            "precision@5": 0.4,
+            "recall@5": 0.5,
+            "mrr": 1.0,
+            "ndcg@5": 0.6131471927654584,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.6666666666666666
+          }
+        },
+        {
+          "query": "What role does reinforcement learning play in training language models?",
+          "scores": {
+            "precision@5": 0.6,
+            "recall@5": 0.5,
+            "mrr": 1.0,
+            "ndcg@5": 0.6131471927654584,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        }
+      ],
+      "elapsed": 1.41
+    },
+    {
+      "config": "hybrid  recursive/bge-small rrf_k=60",
+      "embedder": "bge-small",
+      "rrf_k": 60,
+      "aggregate": {
+        "precision@5": 0.8133333333333334,
+        "recall@5": 0.8333333333333334,
+        "mrr": 0.8666666666666667,
+        "ndcg@5": 0.8067534056959527,
+        "hit_rate@5": 0.9333333333333333,
+        "keyword_hit_rate": 0.8999999999999999
+      },
+      "per_query": [
+        {
+          "query": "How does the attention mechanism work in transformers?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is BERT's pre-training objective?",
+          "scores": {
+            "precision@5": 0.8,
+            "recall@5": 1.0,
+            "mrr": 0.5,
+            "ndcg@5": 0.6309297535714575,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.5
+          }
+        },
+        {
+          "query": "How does GPT-3 achieve few-shot learning?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is retrieval-augmented generation?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does HyDE improve retrieval?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is LoRA and how does it reduce parameters?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is Constitutional AI?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does ReAct combine reasoning and acting?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is chain-of-thought prompting?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does DeepSeek-R1 approach reasoning?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What are the differences between encoder and decoder architectures?",
+          "scores": {
+            "precision@5": 0.8,
+            "recall@5": 0.5,
+            "mrr": 1.0,
+            "ndcg@5": 0.6131471927654584,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How do language models handle alignment with human preferences?",
+          "scores": {
+            "precision@5": 0.0,
+            "recall@5": 0.0,
+            "mrr": 0.0,
+            "ndcg@5": 0.0,
+            "hit_rate@5": 0.0,
+            "keyword_hit_rate": 0.6666666666666666
+          }
+        },
+        {
+          "query": "What techniques reduce the cost of fine-tuning large models?",
+          "scores": {
+            "precision@5": 0.6,
+            "recall@5": 1.0,
+            "mrr": 0.5,
+            "ndcg@5": 0.6309297535714575,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.6666666666666666
+          }
+        },
+        {
+          "query": "How can external knowledge be integrated into language model responses?",
+          "scores": {
+            "precision@5": 0.4,
+            "recall@5": 0.5,
+            "mrr": 1.0,
+            "ndcg@5": 0.6131471927654584,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.6666666666666666
+          }
+        },
+        {
+          "query": "What role does reinforcement learning play in training language models?",
+          "scores": {
+            "precision@5": 0.6,
+            "recall@5": 0.5,
+            "mrr": 1.0,
+            "ndcg@5": 0.6131471927654584,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        }
+      ],
+      "elapsed": 1.47
+    },
+    {
+      "config": "hybrid  recursive/openai rrf_k=10",
+      "embedder": "openai",
+      "rrf_k": 10,
+      "aggregate": {
+        "precision@5": 0.8133333333333334,
+        "recall@5": 0.9,
+        "mrr": 0.9333333333333333,
+        "ndcg@5": 0.8734200723626194,
+        "hit_rate@5": 1.0,
+        "keyword_hit_rate": 0.8888888888888888
+      },
+      "per_query": [
+        {
+          "query": "How does the attention mechanism work in transformers?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is BERT's pre-training objective?",
+          "scores": {
+            "precision@5": 0.8,
+            "recall@5": 1.0,
+            "mrr": 0.5,
+            "ndcg@5": 0.6309297535714575,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.0
+          }
+        },
+        {
+          "query": "How does GPT-3 achieve few-shot learning?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is retrieval-augmented generation?",
+          "scores": {
+            "precision@5": 0.6,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does HyDE improve retrieval?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is LoRA and how does it reduce parameters?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is Constitutional AI?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does ReAct combine reasoning and acting?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is chain-of-thought prompting?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does DeepSeek-R1 approach reasoning?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What are the differences between encoder and decoder architectures?",
+          "scores": {
+            "precision@5": 0.8,
+            "recall@5": 0.5,
+            "mrr": 1.0,
+            "ndcg@5": 0.6131471927654584,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How do language models handle alignment with human preferences?",
+          "scores": {
+            "precision@5": 0.6,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What techniques reduce the cost of fine-tuning large models?",
+          "scores": {
+            "precision@5": 0.8,
+            "recall@5": 1.0,
+            "mrr": 0.5,
+            "ndcg@5": 0.6309297535714575,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.6666666666666666
+          }
+        },
+        {
+          "query": "How can external knowledge be integrated into language model responses?",
+          "scores": {
+            "precision@5": 0.4,
+            "recall@5": 0.5,
+            "mrr": 1.0,
+            "ndcg@5": 0.6131471927654584,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.6666666666666666
+          }
+        },
+        {
+          "query": "What role does reinforcement learning play in training language models?",
+          "scores": {
+            "precision@5": 0.2,
+            "recall@5": 0.5,
+            "mrr": 1.0,
+            "ndcg@5": 0.6131471927654584,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        }
+      ],
+      "elapsed": 13.35
+    },
+    {
+      "config": "hybrid  recursive/openai rrf_k=30",
+      "embedder": "openai",
+      "rrf_k": 30,
+      "aggregate": {
+        "precision@5": 0.8400000000000002,
+        "recall@5": 0.9,
+        "mrr": 0.9666666666666667,
+        "ndcg@5": 0.8980247554578555,
+        "hit_rate@5": 1.0,
+        "keyword_hit_rate": 0.8888888888888888
+      },
+      "per_query": [
+        {
+          "query": "How does the attention mechanism work in transformers?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is BERT's pre-training objective?",
+          "scores": {
+            "precision@5": 0.8,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.0
+          }
+        },
+        {
+          "query": "How does GPT-3 achieve few-shot learning?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is retrieval-augmented generation?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does HyDE improve retrieval?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is LoRA and how does it reduce parameters?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is Constitutional AI?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does ReAct combine reasoning and acting?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is chain-of-thought prompting?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does DeepSeek-R1 approach reasoning?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What are the differences between encoder and decoder architectures?",
+          "scores": {
+            "precision@5": 0.8,
+            "recall@5": 0.5,
+            "mrr": 1.0,
+            "ndcg@5": 0.6131471927654584,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How do language models handle alignment with human preferences?",
+          "scores": {
+            "precision@5": 0.4,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What techniques reduce the cost of fine-tuning large models?",
+          "scores": {
+            "precision@5": 0.8,
+            "recall@5": 1.0,
+            "mrr": 0.5,
+            "ndcg@5": 0.6309297535714575,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.6666666666666666
+          }
+        },
+        {
+          "query": "How can external knowledge be integrated into language model responses?",
+          "scores": {
+            "precision@5": 0.4,
+            "recall@5": 0.5,
+            "mrr": 1.0,
+            "ndcg@5": 0.6131471927654584,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.6666666666666666
+          }
+        },
+        {
+          "query": "What role does reinforcement learning play in training language models?",
+          "scores": {
+            "precision@5": 0.4,
+            "recall@5": 0.5,
+            "mrr": 1.0,
+            "ndcg@5": 0.6131471927654584,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        }
+      ],
+      "elapsed": 8.6
+    },
+    {
+      "config": "hybrid  recursive/openai rrf_k=60",
+      "embedder": "openai",
+      "rrf_k": 60,
+      "aggregate": {
+        "precision@5": 0.8400000000000002,
+        "recall@5": 0.9,
+        "mrr": 0.9333333333333333,
+        "ndcg@5": 0.8734200723626194,
+        "hit_rate@5": 1.0,
+        "keyword_hit_rate": 0.8888888888888888
+      },
+      "per_query": [
+        {
+          "query": "How does the attention mechanism work in transformers?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is BERT's pre-training objective?",
+          "scores": {
+            "precision@5": 0.8,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.0
+          }
+        },
+        {
+          "query": "How does GPT-3 achieve few-shot learning?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is retrieval-augmented generation?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does HyDE improve retrieval?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is LoRA and how does it reduce parameters?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is Constitutional AI?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does ReAct combine reasoning and acting?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What is chain-of-thought prompting?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How does DeepSeek-R1 approach reasoning?",
+          "scores": {
+            "precision@5": 1.0,
+            "recall@5": 1.0,
+            "mrr": 1.0,
+            "ndcg@5": 1.0,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What are the differences between encoder and decoder architectures?",
+          "scores": {
+            "precision@5": 0.8,
+            "recall@5": 0.5,
+            "mrr": 1.0,
+            "ndcg@5": 0.6131471927654584,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "How do language models handle alignment with human preferences?",
+          "scores": {
+            "precision@5": 0.4,
+            "recall@5": 1.0,
+            "mrr": 0.5,
+            "ndcg@5": 0.6309297535714575,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        },
+        {
+          "query": "What techniques reduce the cost of fine-tuning large models?",
+          "scores": {
+            "precision@5": 0.8,
+            "recall@5": 1.0,
+            "mrr": 0.5,
+            "ndcg@5": 0.6309297535714575,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.6666666666666666
+          }
+        },
+        {
+          "query": "How can external knowledge be integrated into language model responses?",
+          "scores": {
+            "precision@5": 0.4,
+            "recall@5": 0.5,
+            "mrr": 1.0,
+            "ndcg@5": 0.6131471927654584,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 0.6666666666666666
+          }
+        },
+        {
+          "query": "What role does reinforcement learning play in training language models?",
+          "scores": {
+            "precision@5": 0.4,
+            "recall@5": 0.5,
+            "mrr": 1.0,
+            "ndcg@5": 0.6131471927654584,
+            "hit_rate@5": 1.0,
+            "keyword_hit_rate": 1.0
+          }
+        }
+      ],
+      "elapsed": 10.87
+    }
+  ]
+}
